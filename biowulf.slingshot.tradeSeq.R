@@ -16,11 +16,11 @@ library(scater)
 
 # read in data ----
 
-sce = readRDS("./sce.(no iPSC, PHA).Leiden.var-dev.genes.RDS")
+sce = readRDS("./sce.var-dev.genes.RDS")
 
 # choose file name base ----
 
-filename.base = "sce.(no iPSC, PHA).Leiden.var-dev.genes.slingshot.start8.end.3.10"
+filename.base = "sce.var-dev.genes.slingshot.start8.end.3.10"
 
 
 
