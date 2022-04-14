@@ -451,38 +451,38 @@ meta = read.table("https://cells.ucsc.edu/cortex-dev/meta.tsv", header=T, sep="\
 genes = mat[,1][[1]]
 genes = gsub(".+[|]", "", genes)
 mat = data.frame(mat[,-1], row.names=genes)
-krieg = CreateSeuratObject(counts = mat, project = "cortex-dev", meta.data=meta)
+nowakowski = CreateSeuratObject(counts = mat, project = "cortex-dev", meta.data=meta)
 
-unique(krieg$WGCNAcluster)
+unique(nowakowski$WGCNAcluster)
 
 
 
 # pre-process ----
 
-krieg = NormalizeData(krieg)
-krieg = FindVariableFeatures(krieg)
-krieg = ScaleData(krieg)
-krieg = RunPCA(krieg)
-krieg = RunUMAP(krieg, dims=1:20)
+nowakowski = NormalizeData(nowakowski)
+nowakowski = FindVariableFeatures(nowakowski)
+nowakowski = ScaleData(nowakowski)
+nowakowski = RunPCA(nowakowski)
+nowakowski = RunUMAP(nowakowski, dims=1:20)
 
 
 
 # WGCNA cluster contains a group of cells with missing cluster assignment
 # these can cause problems when plotting UMAP
-which(krieg@meta.data$WGCNAcluster == "")
-krieg@meta.data[krieg@meta.data$WGCNAcluster == "", ]$WGCNAcluster = "none-missing"
+which(nowakowski@meta.data$WGCNAcluster == "")
+nowakowski@meta.data[nowakowski@meta.data$WGCNAcluster == "", ]$WGCNAcluster = "none-missing"
 
 # set WGCNAcluster as the active identity
-Idents(krieg) = "WGCNAcluster"
+Idents(nowakowski) = "WGCNAcluster"
 
 
 
 # integration ----
 
-features = SelectIntegrationFeatures(object.list = c(tenx.seurat,krieg))
+features = SelectIntegrationFeatures(object.list = c(tenx.seurat,nowakowski))
 
 # find anchors
-anchors = FindIntegrationAnchors(object.list=c(tenx.seurat,krieg), dims=1:30, max.features=800) # default dims=1:30 and max.features=200
+anchors = FindIntegrationAnchors(object.list=c(tenx.seurat,nowakowski), dims=1:30, max.features=800) # default dims=1:30 and max.features=200
 
 # integrate data, this creates a new assay "integrated" in Assays (use this instead of RNA)
 seurat.int = IntegrateData(anchors, dims = 1:30)
