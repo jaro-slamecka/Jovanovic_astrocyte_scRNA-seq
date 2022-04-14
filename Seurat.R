@@ -41,7 +41,7 @@ tenx.seurat.list = lapply(samples,
 
 # merge Seurat objects ----
 tenx.seurat = merge(x = tenx.seurat.list[[1]], y = tenx.seurat.list[2:length(tenx.seurat.list)],
-                    project="H9TE", add.cell.ids=samples)
+                    project="Astro", add.cell.ids=samples)
 
 # check number of cells from each original Seurat object
 table(tenx.seurat$orig.ident)
@@ -96,11 +96,6 @@ rm(plot.colors)
 
 
 # FEATURE PLOTS ----
-
-# in order to modify ggplot themes, set combine=FALSE and combine later
-# originally, this was done using Seurat's CombinePlots() function
-# however, they are deprecating that function and letting users to use the package "patchwork"
-# CombinePlots was slow anyway
 
 draw.feature.plots = function(seurat.object = tenx.seurat,
                               genes.to.plot = NULL,
